@@ -1,8 +1,8 @@
 apiVersion: v1
 # give access to certain type of object types, each API version defines a different set of 'objects' we can use
 kind: Pod
-#pod is the smallest unit that can be deployed with kubernetes. Can use to run 1 or more containers inside of a single pod
-#generally used to group containers that have a very tightly knitted relationship (container will fail without the other container)
+#pod is the smallest unit that can be deployed with k8s. Can use to run 1 or more containers inside of a single pod
+#generally used to run a group of containers that are very closely related (container will fail without the other container)
 # kind is use to represent the type of object that we want to create, type : Pod or Service
 #Objects serve different purposes - objects can be used to run a container, monitoring a container, setting up networking, etc
 metadata: 

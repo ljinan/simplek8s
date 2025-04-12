@@ -1,26 +1,37 @@
 apiVersion: v1
 # give access to certain type of object types, each API version defines a different set of 'objects' we can use
 kind: Service
+#services object types are used to set up networking in a k8s cluster
 # kind is use to represent the type of object that we want to create, type : Pod or Service
 #Objects serve different purposes - objects can be used to run a container, monitoring a container, setting up networking, etc
 metadata:
   name: client-node-port
 spec:
   type: NodePort
+    #NodePort Service - sets up a communication layer between the outside work and the container running inside the pod
+    # every single node/member of a k8s cluster has a program called kubeproxy which acts as a single window to the outside world.
+    #any request that comes into the node will go through the kubeproxy which will inspect the request and decide how to route the request to the different services/pods within the node.
     #service object type have only 4 subtypes: 
       #ClusterIP
-      #NodePort : exposes a container to the outside world (only good for dev purposes, not used in production environemnt)
+      #NodePort : exposes a container to the outside world (only good for dev purposes, not used in production environemnt except for 1 or 2 exceptions)
       #LoadBalancer
       #Ingress
   ports:
+    # this property is an array, can have additional mappings
+    #- port: 9000
     - port: 3050
-      # used if other pods within the cluster needs to connect to any port that is mapped to targetPort: 3000
+      # used for communication between another pod in the cluster/application trying to access the target pod
       targetPort: 3000
-      # needs to be identical to whatever object that it wants to send traffic to, e.g. traffic is being sent to client-pod through the port 3000 on the client port
+      # needs to be identical to whatever object that it wants to send traffic to, e.g. traffic is being sent to client-pod through the port 3000
       nodePort: 31515
+      # used by users to access when trying to test outthe container running inside that pod, url:31515
+      # port that is exposed to the outside world
       # the port number that will be entered into the browser for communication to the NodePort service, which will then decide where to route traffic to
       # nodePort will be a number between 30000 - 32767, if not specified, the number will be randomly assigned
   selector:
+    #k8s uses a label selector system
     component: web
+    #points to the pod with the label of component:web
+    # there can be more than 1 pod with the same label. traffic will be directed to all the pods with that label.
     #can also use other terms --> tier: frontend, but this must be matches to the label of other object that it must connect to
 

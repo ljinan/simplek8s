@@ -17,3 +17,5 @@ spec:
       ports:
         #- containerPort: 3000
         - containerPort: 9999
+        #unable to change container port number with kubectl apply -f client-pod.yaml. Need to use kind:deployment instead of pod
+        

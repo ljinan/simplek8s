@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  # specific the number of identical pods this deployment is supposed to make
+  selector:
+  #selector acts as a handle for the pods this deployment yaml is going to manage after the pods are created
+  #pods are created by the kubernetes master
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+        - name: client
+          image: stephengrider/multi-client
+          #use stephengrider's multi-client image instead
+          ports:
+            - containerPort: 3000

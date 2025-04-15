@@ -21,3 +21,4 @@ spec:
           #use stephengrider's multi-client image instead
           ports:
             - containerPort: 3000
+            #- containerPort: 9999

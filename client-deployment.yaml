@@ -18,7 +18,13 @@ spec:
       containers:
         - name: client
           image: stephengrider/multi-client
+          #there is no way here of specifying which version of the image we want to use if the image is not tagged, even if there is a version change in the image, k8s does not go and search for the new version of the image and reapply the configurations.
           #use stephengrider's multi-client image instead
           ports:
             - containerPort: 3000
             #- containerPort: 9999
+      #if this file remains unchange and we run the apply file command again, k8s will reject the apply command
+      #possible solutions:
+      #1) to manually delete the pods and recreate with the latest version >>> manually deleteing multiple pods seems silly and will waste a lot of time as the pods will be recreated because k8s is sensing that the pod is down.
+      #2)tagging of docker images with real version numbers and specify the version number in the config file. --> actual change to the config file. apply command would be accepted. downside to this approach is it adds an extra step to the deployment process as we have to append a version number to the images everytime it is built and put it the version number into the deployment file. , we are unable to use environment variables inside the config file so a solution such as image: stephengrider/multi-client:${CLIENT_VERSION} does not work
+      #3) use an imperative command to update the image version that the deployment should use, which is essentially skipping over the usage of config file. But is the best solution for this situation
